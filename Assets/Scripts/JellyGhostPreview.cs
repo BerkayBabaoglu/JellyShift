@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class JellyGhostPreview : MonoBehaviour
 {
-    public GameObject[] ghostCubes; // Inspector’dan sırayla atayacaksın
+    public GameObject[] ghostCubes; 
     private int currentIndex = 0;
 
     public void ForceUpdateGhost()
@@ -24,7 +24,6 @@ public class JellyGhostPreview : MonoBehaviour
 
             ghost.transform.localScale = adjustedLocalScale;
 
-            // Sadece Y rotasyonu uygulansın, X ve Z sıfırlansın
             float yRotation = playerShape.eulerAngles.y;
             ghost.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
@@ -53,7 +52,6 @@ public class JellyGhostPreview : MonoBehaviour
 
             ghost.transform.localScale = adjustedLocalScale;
 
-            // Sadece Y rotasyonu uygula, X ve Z sıfırlanır
             float yRotation = playerShape.eulerAngles.y;
             ghost.transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
