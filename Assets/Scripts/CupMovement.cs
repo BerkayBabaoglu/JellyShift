@@ -1,19 +1,28 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+using System.Collections;
 
 public class CupMovement : MonoBehaviour
 {
     public SplineContainer splineContainer;
 
+    private bool isMoving = false;
     public float moveSpeed = 0.4f;
     public float move = 0f;
 
+    public Vector3 rotationAxis = Vector3.up;
+    public float rotationSpeed = 90f;
+
     public float rotationY = -90f;
+
 
     private void Update()
     {
-        if (splineContainer == null) return;
+        if (Input.GetMouseButtonDown(0) & !isMoving)
+            isMoving = true;
+
+        if (!isMoving || splineContainer == null) return;
 
         move += (moveSpeed / splineContainer.CalculateLength()) * Time.deltaTime;
         move = Mathf.Clamp01(move);
@@ -34,5 +43,23 @@ public class CupMovement : MonoBehaviour
             lookRot *= Quaternion.Euler(0f, rotationY, 0f);
             transform.rotation = lookRot;
         }
+
+
+        //donus
+        transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime);
+
+
+        
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")){
+            Destroy(this.gameObject);
+            PathFollow.Instance.moveSpeed += 0.1f;
+        }
+
+    }
+
+
 }

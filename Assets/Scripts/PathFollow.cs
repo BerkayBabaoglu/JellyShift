@@ -4,15 +4,41 @@ using Unity.Mathematics;
 
 public class PathFollow : MonoBehaviour
 {
+    public static PathFollow Instance
+    {
+        get; private set;
+    }
+
+    private bool isMoving = false;
     public SplineContainer splineContainer;
-    public float moveSpeed = 1f;
+    public float moveSpeed = 0.09f;
     private float move = 0f;
 
-    public float rotationY = -90f; 
+    public float rotationY = -90f;
+
+    public GameObject[] UI;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     private void Update()
     {
-        if (splineContainer == null) return;
+        if(Input.GetMouseButtonDown(0) & !isMoving)
+        {
+            isMoving = true;
+            foreach (GameObject go in UI) {
+                go.SetActive(false);
+            }
+        }
+            
+
+
+        if (!isMoving || splineContainer == null) return;
 
         // t adim ilerletiyorum
         move += (moveSpeed / splineContainer.CalculateLength()) * Time.deltaTime;
@@ -34,5 +60,10 @@ public class PathFollow : MonoBehaviour
             lookRot *= Quaternion.Euler(0f, rotationY, 0f);
             transform.rotation = lookRot;
         }
+    }
+
+    public float GetMoveSpeed()
+    {
+        return moveSpeed;
     }
 }
